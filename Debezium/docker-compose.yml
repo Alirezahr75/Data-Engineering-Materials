@@ -1,0 +1,51 @@
+version: "3"
+services:
+  zookeeper:
+    image: debezium/zookeeper:1.6
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+  kafka:
+    image: debezium/kafka:1.6
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    links:
+      - zookeeper
+    environment:
+      KAFKA_ADVERTISED_HOST_NAME: ${HOST_IP}
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'true'
+      KAFKA_DELETE_TOPIC_ENABLE: 'true'
+      ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    hostname: kafka
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+  postgres-connector:
+    image: debezium/connect:1.6
+    container_name: postgres-debezium
+    ports:
+      - 9090:8083
+    links:
+      - kafka
+    depends_on:
+      - kafka
+      - postgres
+    environment:
+      - BOOTSTRAP_SERVERS=kafka:9092
+      - GROUP_ID=pg
+      - CONFIG_STORAGE_TOPIC=pg_connect_config
+      - OFFSET_STORAGE_TOPIC=pg_connect_offset
+      - STATUS_STORAGE_TOPIC=pg_connect_status

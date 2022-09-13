@@ -1,0 +1,23 @@
+{
+    "name": "debezium-develop",
+    "config": {
+      "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+      "plugin.name": "pgoutput",
+      "publication.name": "dbz_publication",
+      "database.server.name": "postgres",
+      "database.server.id": 1234,
+      "database.hostname": "mypostgres-postgresql.postgres",
+      "database.port": 1234,
+      "database.user": "postgres",
+      "database.password": "postgres",
+      "database.dbname": "my_database",
+      "table.include.list": "my_schema.table1, my_schema.table2, my_schema.table3",
+      "heartbeat.interval.ms": 300000,
+      "heartbeat.topics.prefix": "debezium_heartbeat",
+      "heartbeat.action.query": "UPDATE my_schema.debezium_heartbeat SET updated_at=now();",
+      "tasks.max": 1,
+      "max.batch.size": 4096,
+      "max.queue.size": 16384,
+      "poll.interval.ms": 10000
+    }
+}
