@@ -66,7 +66,7 @@ Be aware that in this debezium release, you cant change configs after Applying i
 Debezium creates a separate topic for each table in Postgres. So, if you want debezium to do it automatically, set "auto.create.topics.enable" to true in your Kafka config file.
 
 
-## Postgres Mangement and Possible Errors
+## Postgres Management and Possible Errors
 With every change in the database, a wal file is created to keep the current state. If these files are not managed, the disk space of Postgres will be full, and its execution will stop.
 
 The Debezium tool stores its last used wal in a Postgres view named "pg_replication_slots." To find these values, use the following command:
