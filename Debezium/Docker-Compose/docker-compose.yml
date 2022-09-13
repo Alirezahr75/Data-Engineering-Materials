@@ -1,0 +1,13 @@
+version: "3"
+services:
+  postgres-connector:
+    image: debezium/connect:1.6
+    container_name: postgres-debezium
+    ports:
+      - 9090:8083
+    environment:
+      - BOOTSTRAP_SERVERS=192.168.242.121:31090
+      - GROUP_ID=pg
+      - CONFIG_STORAGE_TOPIC=pg_connect_configs
+      - OFFSET_STORAGE_TOPIC=pg_connect_offsets
+      - STATUS_STORAGE_TOPIC=pg_connect_statuses
