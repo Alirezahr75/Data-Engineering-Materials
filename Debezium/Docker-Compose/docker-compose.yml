@@ -6,7 +6,7 @@ services:
     ports:
       - 9090:8083
     environment:
-      - BOOTSTRAP_SERVERS=192.168.242.121:31090
+      - BOOTSTRAP_SERVERS=kafka:9092
       - GROUP_ID=pg
       - CONFIG_STORAGE_TOPIC=pg_connect_configs
       - OFFSET_STORAGE_TOPIC=pg_connect_offsets
